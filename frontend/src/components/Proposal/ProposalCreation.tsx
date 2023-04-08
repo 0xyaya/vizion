@@ -1,44 +1,43 @@
-import { useState, useRef, useEffect } from 'react'
-import Button from '../UI/Button'
-import { create } from 'ipfs-http-client'
-import { ImportCandidate } from 'ipfs-core-types/src/utils'
-import useDebounce from '../../hooks/useDebounce'
-import useGouvernance from 'src/hooks/useGouvernance'
+import { useState, useRef, useEffect } from 'react';
+import Button from '../UI/Button';
+import { create } from 'ipfs-http-client';
+import { ImportCandidate } from 'ipfs-core-types/src/utils';
+import useDebounce from '../../hooks/useDebounce';
+import useGouvernance from 'src/hooks/useGouvernance';
+import useHasMounted from 'src/hooks/useHasMounted';
 
 const ProposalCreation = () => {
-  const titleRef = useRef<HTMLInputElement>(null)
-  const descriptionRef = useRef<HTMLTextAreaElement>(null)
-  const authorRef = useRef<HTMLInputElement>(null)
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const authorRef = useRef<HTMLInputElement>(null);
 
-  const [hasMounted, setHasMounted] = useState(false)
-  const [imageFile, setImageFile] = useState<File>()
-  const [imageString, setImageString] = useState('')
-  const [imageUri, setImageUri] = useState('')
-  const [proposalUri, setProposalUri] = useState('')
-  const [uploaded, setUploaded] = useState(false)
-  const { addProposal } = useGouvernance(hasMounted)
-  const debounced = useDebounce([proposalUri, imageUri], 500)
-
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
+  const [imageFile, setImageFile] = useState<File>();
+  const [imageString, setImageString] = useState('');
+  const [imageUri, setImageUri] = useState('');
+  const [proposalUri, setProposalUri] = useState('');
+  const [uploaded, setUploaded] = useState(false);
+  const hasMounted = useHasMounted();
+  const { addProposal } = useGouvernance(hasMounted);
+  const debounced = useDebounce([proposalUri, imageUri], 500);
 
   useEffect(() => {
     const call = async () => {
       if (hasMounted && uploaded) {
-        await addProposal(proposalUri, proposalUri) // tokenUri / proposalUri
-        setUploaded(false)
+        await addProposal(proposalUri, proposalUri);
+        setUploaded(false);
       }
-    }
-    call()
-  }, [uploaded, imageUri, proposalUri])
+    };
+    call();
+  }, [uploaded, imageUri, proposalUri]);
 
-  if (!hasMounted) return null
+  if (!hasMounted) return null;
 
   const uploadToIPFS = async (data: ImportCandidate) => {
     const auth =
       'Basic ' +
-      Buffer.from('2NQ90Il41m07ZHxoT8ViejfS10M:195bd430161acbeff218e5f0bf912b90').toString('base64')
+      Buffer.from(
+        '2NQ90Il41m07ZHxoT8ViejfS10M:195bd430161acbeff218e5f0bf912b90'
+      ).toString('base64');
     const client = create({
       host: 'ipfs.infura.io',
       port: 5001,
@@ -46,38 +45,38 @@ const ProposalCreation = () => {
       headers: {
         authorization: auth
       }
-    })
-    const created = await client.add(data)
-    const uri = `https://ipfs.io/ipfs/${created.path}`
-    return uri
-  }
+    });
+    const created = await client.add(data);
+    const uri = `https://ipfs.io/ipfs/${created.path}`;
+    return uri;
+  };
 
   const createProposalHandler = async () => {
     if (imageFile) {
-      const uri = await uploadToIPFS(imageFile)
+      const uri = await uploadToIPFS(imageFile);
       const json = JSON.stringify({
         title: titleRef.current?.value!,
         description: descriptionRef.current?.value!,
         author: authorRef.current?.value!,
         imageUri: uri
-      })
+      });
 
-      const pUri = await uploadToIPFS(json)
+      const pUri = await uploadToIPFS(json);
 
-      console.log('URI: ', pUri)
+      console.log('URI: ', pUri);
 
-      setImageUri(uri)
-      setProposalUri(pUri)
-      setUploaded(true)
+      setImageUri(uri);
+      setProposalUri(pUri);
+      setUploaded(true);
     }
-  }
+  };
 
   const fileHandler = async (selectorFiles: FileList | null) => {
     if (selectorFiles !== null) {
-      setImageString(URL.createObjectURL(selectorFiles[0]))
-      setImageFile(selectorFiles[0])
+      setImageString(URL.createObjectURL(selectorFiles[0]));
+      setImageFile(selectorFiles[0]);
     }
-  }
+  };
 
   return (
     <div className="relative flex justify-around items-center bg-[#000514] border border-[#00248F] text-white rounded-md p-4 w-full">
@@ -116,7 +115,7 @@ const ProposalCreation = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProposalCreation
+export default ProposalCreation;

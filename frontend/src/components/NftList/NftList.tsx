@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import useCollection from 'src/hooks/useCollection';
+import useHasMounted from 'src/hooks/useHasMounted';
 import NftItem from './NftItem';
 
 type VizionNftMetadata = {
@@ -15,13 +16,9 @@ type VizionNft = VizionNftMetadata & {
 };
 
 const NftList = () => {
-  const [hasMounted, setHasMounted] = useState(false);
   const [nfts, setNfts] = useState<VizionNft[]>([]);
+  const hasMounted = useHasMounted();
   const { getTokenUri, uris } = useCollection(hasMounted);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
 
   useEffect(() => {
     const loadMetadata = async () => {

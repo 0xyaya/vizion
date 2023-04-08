@@ -1,16 +1,13 @@
 import ProposalItem, { Proposal } from './ProposalItem';
 import { useEffect, useState } from 'react';
 import useGouvernance from 'src/hooks/useGouvernance';
+import useHasMounted from 'src/hooks/useHasMounted';
 
 const ProposalList = () => {
   const [votingTime, setVotingTime] = useState(true);
-  const [hasMounted, setHasMounted] = useState(false);
+  const hasMounted = useHasMounted();
   const [realProposals, setRealProposals] = useState<Proposal[]>([]);
   const { tokenIds, proposals } = useGouvernance(hasMounted);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

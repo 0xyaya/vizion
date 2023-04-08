@@ -1,41 +1,39 @@
-import React from 'react'
-import Count from '../Count'
-import { useState, useEffect } from 'react'
-import useGouvernance from 'src/hooks/useGouvernance'
-import { Button } from '../UI'
+import React from 'react';
+import Count from '../Count';
+import { useState, useEffect } from 'react';
+import useGouvernance from 'src/hooks/useGouvernance';
+import { Button } from '../UI';
+import useHasMounted from 'src/hooks/useHasMounted';
 
 type StatusBarProps = {
-  onCreate: () => void
-}
+  onCreate: () => void;
+};
 
 const StatusBar = ({ onCreate }: StatusBarProps) => {
-  const [hasMounted, setHasMounted] = useState(false)
-  const { status, blockLeft } = useGouvernance(hasMounted)
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
+  const hasMounted = useHasMounted();
+  const { status, blockLeft } = useGouvernance(hasMounted);
 
-  if (!hasMounted) return null
+  if (!hasMounted) return null;
 
   const title = () => {
-    if (Number(status) === 0 || Number(status) === 1) return 'Creation Time'
+    if (Number(status) === 0 || Number(status) === 1) return 'Creation Time';
 
-    if (Number(status) === 2) return 'Voting Time'
+    if (Number(status) === 2) return 'Voting Time';
 
-    if (Number(status) === 3) return 'Something went wront'
-  }
+    if (Number(status) === 3) return 'Something went wront';
+  };
 
   const secToTime = (totalSeconds: number) => {
-    let hours = Math.floor(totalSeconds / 3600)
-    totalSeconds %= 3600
-    let minutes = Math.floor(totalSeconds / 60)
-    let seconds = Math.floor(totalSeconds % 60)
-    return hours + ':' + minutes + ':' + seconds
-  }
+    let hours = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = Math.floor(totalSeconds % 60);
+    return hours + ':' + minutes + ':' + seconds;
+  };
 
   const computeTimeLeft = (blocks: number): number => {
-    return blocks * 12
-  }
+    return blocks * 12;
+  };
 
   return (
     <div className="flex bg-[#00248F] border rounded-md border-white my-4 p-4 space-x-4 items-center text-white">
@@ -53,7 +51,7 @@ const StatusBar = ({ onCreate }: StatusBarProps) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default StatusBar
+export default StatusBar;

@@ -1,21 +1,20 @@
-import { useEffect, useState } from 'react'
-import useGouvernance from 'src/hooks/useGouvernance'
+import { useEffect, useState } from 'react';
+import useGouvernance from 'src/hooks/useGouvernance';
+import useHasMounted from 'src/hooks/useHasMounted';
 
 const Count = () => {
-  const [hasMounted, setHasMounted] = useState(false)
-  const { proposalIds } = useGouvernance(hasMounted)
+  const hasMounted = useHasMounted();
+  const { proposalIds } = useGouvernance(hasMounted);
 
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
-
-  if (!hasMounted) return null
+  if (!hasMounted) return null;
 
   return (
     <>
-      <div>Proposal Count: {Number(proposalIds) ? Number(proposalIds) : 'Error'}</div>
+      <div>
+        Proposal Count: {Number(proposalIds) ? Number(proposalIds) : 'Error'}
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Count
+export default Count;
