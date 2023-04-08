@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import StatusBar from 'src/components/StatusBar/StatusBar';
-import Modal from 'src/components/Modal';
+import { Modal } from 'src/components/UI';
 import { ProposalCreation, ProposalList } from 'src/components/Proposal';
 import Layout from './layout';
 

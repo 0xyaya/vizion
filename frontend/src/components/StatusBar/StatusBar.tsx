@@ -1,6 +1,5 @@
 import React from 'react';
-import Count from '../Count';
-import { useState, useEffect } from 'react';
+import Count from '../Count/Count';
 import useGouvernance from 'src/hooks/useGouvernance';
 import { Button } from '../UI';
 import useHasMounted from 'src/hooks/useHasMounted';
