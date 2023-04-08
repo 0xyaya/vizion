@@ -1,31 +1,35 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat");
+const hre = require('hardhat');
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  const Collection = await hre.ethers.getContractFactory('VizionCollection');
+  const collection = await Collection.deploy();
+  await collection.deployed();
 
-  const lockedAmount = hre.ethers.utils.parseEther("0.001");
+  console.log(`Collection  deployed to ${collection.address}`);
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  const VizionGouvernance = await hre.ethers.getContractFactory(
+    'VizionGouvernance'
+  );
+  const genesisProposalUri = '';
+  const genesisTokenUri = '';
 
-  await lock.deployed();
+  const vizionGouvernance = await VizionGouvernance.deploy(
+    collection.address,
+    genesisTokenUri,
+    genesisProposalUri
+  );
+
+  await vizionGouvernance.deployed();
+
+  console.log(`VizionGouvernance  deployed to ${vizionGouvernance.address}`);
+
+  await collection.setMinter(vizionGouvernance.address);
 
   console.log(
-    `Lock with ${ethers.utils.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+    `Set the gouvernance contract ${vizionGouvernance.address} as a vizion collection minter`
   );
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
