@@ -36,7 +36,7 @@ const ProposalCreation = () => {
     const auth =
       'Basic ' +
       Buffer.from(
-        '2NQ90Il41m07ZHxoT8ViejfS10M:195bd430161acbeff218e5f0bf912b90'
+        `${process.env.PROJECT_ID}:${process.env.API_KEY_SECRET}` // TODO: Use env
       ).toString('base64');
     const client = create({
       host: 'ipfs.infura.io',
