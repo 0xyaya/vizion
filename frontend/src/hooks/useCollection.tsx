@@ -2,7 +2,7 @@ import { useContract, useSigner } from 'wagmi';
 import { useState, useEffect } from 'react';
 import { abi } from '../contracts/collection.json';
 
-const address = '0xFD471836031dc5108809D173A067e8486B9047A3';
+const address = '0xa6f9a9F3411b32d24bD1d93965fd609e9418A24D';
 
 export default function useCollection(hasMounted: boolean) {
   const { data: signerData } = useSigner();

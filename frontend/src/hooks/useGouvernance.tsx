@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useContractRead, useContract, useSigner } from 'wagmi';
 import { abi } from '../contracts/gouvernance.json';
 
-const address = '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc';
+const address = '0x08f3C87f5559b811240FC7E0016440C375266cf1';
 
 interface Proposal {
   proposalId: number;
