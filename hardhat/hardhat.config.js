@@ -12,7 +12,7 @@ module.exports = {
     polygonMumbai: {
       url: POLYGON_MUMBAI_RPC_PROVIDER,
       accounts: [`0x${PRIVATE_KEY}`],
-      gas: 210000,
+      gasLimit: 210000,
       gasPrice: 8000000000
     }
   },
