@@ -3,8 +3,9 @@ pragma solidity ^0.8.18;
 
 import "./VizionCollection.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract VizionGouvernance {
+contract VizionGouvernance is Ownable {
     enum WorkflowStatus {
         InitProposal,
         AddProposal,
@@ -176,11 +177,11 @@ contract VizionGouvernance {
         }
     }
 
-    function setChallengePeriod(uint256 _period) external {
+    function setCreationPeriod(uint256 _period) external onlyOwner {
         s_creationPeriod = _period;
     }
 
-    function setVotingPeriod(uint256 _period) external {
+    function setVotingPeriod(uint256 _period) external onlyOwner {
         s_votingPeriod = _period;
     }
 
