@@ -36,6 +36,7 @@ const NftList = () => {
       });
 
       const nfts = await Promise.all(tokens);
+      console.log(nfts);
       setNfts(nfts);
     };
 

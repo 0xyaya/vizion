@@ -2,7 +2,7 @@ import { useContract, useSigner } from 'wagmi';
 import { useState, useEffect } from 'react';
 import { abi } from '../contracts/collection.json';
 
-const address = '0xa6f9a9F3411b32d24bD1d93965fd609e9418A24D';
+const address = process.env.COLLECTION_ADDRESS;
 
 export default function useCollection(hasMounted: boolean) {
   const { data: signerData } = useSigner();
@@ -32,7 +32,7 @@ export default function useCollection(hasMounted: boolean) {
 
     const filter = await contract?.filters.Transfer(
       null,
-      '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+      process.env.MARKETPLACE_ADDRESS
     );
     if (!filter) return;
 
