@@ -10,8 +10,10 @@ async function main() {
   const VizionGouvernance = await hre.ethers.getContractFactory(
     'VizionGouvernance'
   );
-  const genesisProposalUri = '';
-  const genesisTokenUri = '';
+  const genesisProposalUri =
+    'https://ipfs.io/ipfs/QmYP4GvF5nL2aoHauupWujo2enrv3yoegWgck631eUb74C';
+  const genesisTokenUri =
+    'https://ipfs.io/ipfs/QmYP4GvF5nL2aoHauupWujo2enrv3yoegWgck631eUb74C';
 
   const vizionGouvernance = await VizionGouvernance.deploy(
     collection.address,
