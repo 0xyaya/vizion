@@ -5,6 +5,10 @@ import "./VizionCollection.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/// @title An Ownable contract named VizionGouvernance
+/// @author Yann
+/// @notice Core contract for the DAO
+/// @dev Inherits the OpenZepplin Ownable implentation
 contract VizionGouvernance is Ownable {
     enum WorkflowStatus {
         InitProposal,
@@ -65,6 +69,10 @@ contract VizionGouvernance is Ownable {
         );
     }
 
+    /// @notice add a new proposal for the next nft mint
+    /// @dev External function
+    /// @param _tokenUri the token's uri metadata on ipfs
+    /// @param _proposalUri the proposal's uri metadata on ipfs
     function addProposal(
         string memory _tokenUri,
         string memory _proposalUri
@@ -121,6 +129,9 @@ contract VizionGouvernance is Ownable {
         s_collection.mint(lastProposalWinner.tokenUri);
     }
 
+    /// @notice vote for the proposal
+    /// @dev External function
+    /// @param _proposal the proposal choosen by the voter
     function vote(uint256 _proposal) external {
         require(_proposal <= s_proposalIds, "Bad proposal id");
         require(
@@ -143,6 +154,8 @@ contract VizionGouvernance is Ownable {
         }
     }
 
+    /// @notice get the workflow status from the parameters and current block number
+    /// @dev Public function
     function getWorkflowStatus() public view returns (WorkflowStatus status) {
         if (block.number > s_lastRefBlock + s_creationPeriod + s_votingPeriod) {
             status = WorkflowStatus.InitProposal;
@@ -161,6 +174,8 @@ contract VizionGouvernance is Ownable {
         }
     }
 
+    /// @notice how many block left until the next step
+    /// @dev  public function
     function getBlockLeft() public view returns (uint256 blockLeft) {
         WorkflowStatus status = getWorkflowStatus();
 
@@ -177,14 +192,21 @@ contract VizionGouvernance is Ownable {
         }
     }
 
+    /// @notice update the creation period (in blocks)
+    /// @dev external and onlyOwner
+    /// @param _period the new creation period (in blocks)
     function setCreationPeriod(uint256 _period) external onlyOwner {
         s_creationPeriod = _period;
     }
 
+    /// @notice update the voting period (in blocks)
+    /// @dev external and onlyOwner
+    /// @param _period the new voting period (in blocks)
     function setVotingPeriod(uint256 _period) external onlyOwner {
         s_votingPeriod = _period;
     }
 
+    // Will compute a voting power later based on the VIZ tokens hold andstaked
     function getVotingPower(address _voter) internal pure returns (uint256) {
         return 1;
     }
